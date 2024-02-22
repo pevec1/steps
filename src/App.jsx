@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import dataForm from "./../data.json";
+//import dataForm from "./../data.json";
 function App() {
   
   const [dataList, setList] = useState([])
@@ -37,14 +37,6 @@ function App() {
       })
     );
         console.log(data2, dataList);
-        // let dates = data2.date, traveled = data2.traveled;
-        //   if (dates === dataForm.find((dat)=> dat.date == dates)?.date){
-        //     dataForm.map((dat)=> {
-        //     if (dat.date === dates) {dat.traveled += Number(traveled)}
-        //     })}
-        //   else {dataForm.push({ date: dates, traveled: Number(traveled)})
-        //   }
-        //   console.log(dataForm);
   };
   const onChange = (event) => {
     const { target } = event;
@@ -55,9 +47,9 @@ function App() {
   };
   const handleClick = (x) => {
     setList(dataList=>[...dataList].filter(( obj )=> {
-    return obj.data !== x;
+    return obj.date !== x;
 }))
-    console.log(dataList);
+    console.log(dataList, x);
   }
 
   return (
