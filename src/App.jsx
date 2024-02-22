@@ -4,10 +4,10 @@ import dataForm from "./../data.json";
 function App() {
   
   const [dataList, setList] = useState()
-  const [data, setData] = useState({
+  const [data, setData] = useState({0:{
     date: new Date().toLocaleDateString(),
-    traveled: 0,
-  });
+    traveled: 2,
+  }});
     console.log(data);
  
   const onSubmit = (event) => {
@@ -17,24 +17,27 @@ function App() {
     const formData = new FormData(target);
 
     const data2 = Object.fromEntries(formData);
-        console.log(data2, dataForm);
+        console.log(data2, data);
         let dates = data2.date, traveled = data2.traveled;
-          if (dates === dataForm.find((dat)=> dat.date == dates)?.date){
-            dataForm.map((dat)=> {
+          if (dates === Array.from(data).find((dat)=> dat.date == dates)?.date){
+            Array.from(data).map((dat)=> {
             if (dat.date === dates) {dat.traveled += Number(traveled)}
             })}
-          else {dataForm.push({ date: dates, traveled: Number(traveled)})
+          else {Array.from(data).push({ date: dates, traveled: Number(traveled)})
           }
-          console.log(dataForm);
+          console.log(data);
   };
   const onChange = (event) => {
-    const { target } = event;
-    console.log(target)
-    const { value } = target;
-    setData(value);
-  };
+    console.log(event);
+    if (event.target.name === "date") {
+           setData({0:{[event.target.name]:event.target.value,["traveled"]:0}});
+    }
+    if (event.target.name === "traveled") {
+           setData({0:{["date"]:"22.02.2024",[event.target.name]:event.target.value}});
+    }
+        }
   const handleClick = (i) => {
-    dataForm.splice(i, 1);
+    Array.from(data).splice(i, 1);
   }
 
   return (
@@ -46,7 +49,7 @@ function App() {
             <input
               type="text"
               name="date"
-              value={data.date}
+              value={data[0].date}
               onChange={onChange}
             />
           </div>
@@ -55,7 +58,7 @@ function App() {
             <input
               type="text"
               name="traveled"
-              value={data.traveled}
+              value={data[0].traveled}
               onChange={onChange}
             />
           </div>
@@ -67,9 +70,12 @@ function App() {
       <div className="row">
         <div className="answer">
           <ul>
-            {[...dataForm].map((record, i) => (
+            {Array.from(data).map((record, i) => (
               <li key={i}>
-                <span>{record.date}</span> <span>{record.traveled}</span> <button className="delete" onClick={handleClick(i)}>удалить</button>
+                <span>{record.date}</span> <span>{record.traveled}</span>{" "}
+                <button className="delete" onClick={handleClick(i)}>
+                  удалить
+                </button>
               </li>
             ))}
           </ul>
